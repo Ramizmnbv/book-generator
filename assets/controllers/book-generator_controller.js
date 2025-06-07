@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { StreamActions } from '@hotwired/turbo';
 
 export default class extends Controller {
     static targets = ["locale", "seed", "likes", "reviews", "frame", "loader", "likesValue"];
@@ -45,11 +46,15 @@ export default class extends Controller {
         if (entries[0].isIntersecting) {
             this.page++;
             const url = this.buildUrl();
-            await fetch(url, {
+            const response = await fetch(url, {
                 headers: {
                     Accept: 'text/vnd.turbo-stream.html'
                 }
             });
+
+            const html = await response.text();
+         const fragment = document.createRange().createContextualFragment(html);
+         document.body.appendChild(fragment); // This triggers Turbo Stream
         }
     }
     

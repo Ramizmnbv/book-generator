@@ -31,12 +31,11 @@ class BookController extends AbstractController
         $books = $bookGenerator->generateBooks($locale, $seed, $likes, $reviews, $page, $perPage);
 
         // Check if the request is for a turbo-stream (for infinite scrolling)
-        if ($request->headers->get('Accept') === 'text/vnd.turbo-stream.html' && $page > 1) {
-            // Append new content
-            return $this->render('book/_book_stream.stream.html.twig', [
-                'books' => $books,
-            ]);
-        }
+        if (str_contains($request->headers->get('Accept', ''), 'text/vnd.turbo-stream.html') && $page > 1) {
+        return $this->render('book/_book_stream.stream.html.twig', [
+        'books' => $books,
+        ]);
+      }
 
         // Render a Twig partial. This is great for Turbo Streams.
         return $this->render('book/_book_list.html.twig', [
