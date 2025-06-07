@@ -34,12 +34,12 @@ class BookGenerator
             mt_srand($bookSeed);
 
             $book = [
-                'index' => $startIndex + $i,
-                'isbn' => $faker->isbn13(),
-                'title' => rtrim($faker->realText(50), '.'),
-                'authors' => [],
-                'publisher' => $faker->company() . ' ' . $faker->companySuffix(),
-                'coverUrl' => '[https://picsum.photos/seed/](https://picsum.photos/seed/)' . $bookSeed . '/400/600',
+            'index' => $startIndex + $i,
+            'isbn' => $faker->isbn13(),
+            'title' => rtrim($faker->realText(50), '.'),
+            'authors' => [],
+            'publisher' => $faker->company() . ' ' . $faker->companySuffix(),
+            'coverUrl' => 'https://picsum.photos/seed/' . $bookSeed . '/400/600',
             ];
 
             // Generate 1 to 3 authors
