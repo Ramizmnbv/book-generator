@@ -21,8 +21,8 @@ class BookController extends AbstractController
     {
         $locale = $request->query->get('locale', 'en_US');
         $seed = $request->query->getInt('seed', random_int(1, 1000000));
-        $likes = $request->query->getfloat('likes', 1.0);
-        $reviews = $request->query->getfloat('reviews', 1.0);
+        $likes = (float) $request->query->get('likes', 1.0);
+        $reviews = (float) $request->query->get('reviews', 1.0);
         
         // For infinite scroll, page 1 has 20 items, subsequent pages have 10
         $page = $request->query->getInt('page', 1);
