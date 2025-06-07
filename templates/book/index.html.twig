@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book Generator{% endblock %}
+
+{% block body %}
+<div class="container mx-auto p-4" {{ stimulus_controller('book-generator') }}>
+    <h1 class="text-3xl font-bold mb-4">📚 Book Generator</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 p-4 border rounded-lg bg-gray-50">
+        <div>
+            <label for="locale" class="block text-sm font-medium text-gray-700">Language</label>
+            <select id="locale" {{ stimulus_target('book-generator', 'locale') }} {{ stimulus_action('book-generator', 'generate', 'change') }} class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                <option value="en_US" selected>English (USA)</option>
+                <option value="de_DE">German (Germany)</option>
+                <option value="ja_JP">Japanese (Japan)</option>
+            </select>
+        </div>
+        <div>
+            <label for="seed" class="block text-sm font-medium text-gray-700">Seed</label>
+            <div class="flex">
+                <input type="number" id="seed" {{ stimulus_target('book-generator', 'seed') }} {{ stimulus_action('book-generator', 'generate', 'change') }} class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                <button {{ stimulus_action('book-generator', 'randomizeSeed') }} class="ml-2 p-2 bg-blue-500 text-white rounded-md">🔀</button>
+            </div>
+        </div>
+        <div>
+            <label for="likes" class="block text-sm font-medium text-gray-700">Avg Likes: <span {{ stimulus_target('book-generator', 'likesValue') }}>1.0</span></label>
+            <input type="range" id="likes" min="0" max="10" step="0.1" value="1.0" {{ stimulus_target('book-generator', 'likes') }} {{ stimulus_action('book-generator', 'updateAndGenerate', 'input') }} class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+        </div>
+        <div>
+            <label for="reviews" class="block text-sm font-medium text-gray-700">Avg Reviews</label>
+            <input type="number" id="reviews" min="0" max="20" step="0.1" value="1.0" {{ stimulus_target('book-generator', 'reviews') }} {{ stimulus_action('book-generator', 'generate', 'change') }} class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        </div>
+    </div>
+
+    <turbo-frame id="book-list-container" 
+                 src="{{ path('api_books') }}" 
+                 data-book-generator-target="frame" 
+                 class="block">
+        <div class="text-center p-8">Loading books...</div>
+    </turbo-frame>
+    
+    <div {{ stimulus_target('book-generator', 'loader') }} class="h-10"></div>
+
+</div>
+{% endblock %}

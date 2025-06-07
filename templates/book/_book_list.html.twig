@@ -1,0 +1,30 @@
+{% for book in books %}
+<div class="border-b" {{ stimulus_controller('book-row') }}>
+    <div class="flex items-center p-2 cursor-pointer hover:bg-gray-100" {{ stimulus_action('book-row', 'toggle') }}>
+        <div class="w-12 text-gray-500">{{ book.index }}</div>
+        <div class="w-48">{{ book.isbn }}</div>
+        <div class="w-1/3 font-semibold">{{ book.title }}</div>
+        <div class="w-1/4">{{ book.authors|join(', ') }}</div>
+        <div class="flex-grow">{{ book.publisher }}</div>
+    </div>
+    <div {{ stimulus_target('book-row', 'details') }} class="hidden p-4 bg-gray-50 border-t">
+        <div class="flex">
+            <img src="{{ book.coverUrl }}" alt="Book Cover for {{ book.title }}" class="w-40 h-60 object-cover rounded mr-4">
+            <div>
+                <h3 class="text-xl font-bold">Reviews ({{ book.reviews|length }})</h3>
+                <p class="text-sm text-gray-600 mb-2">Likes: {{ book.likes }}</p>
+                <div class="max-h-48 overflow-y-auto">
+                    {% for review in book.reviews %}
+                        <div class="mb-2 border-l-2 pl-2">
+                            <p>"{{ review.text }}"</p>
+                            <p class="text-sm text-right text-gray-500">- {{ review.author }}</p>
+                        </div>
+                    {% else %}
+                        <p class="text-gray-500">No reviews for this book.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
